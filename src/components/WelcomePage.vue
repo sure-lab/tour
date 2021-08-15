@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navbar">
-      <a href="#home" id="v-step-0">KOSA</a>
+      <a href="#home" id="v-step-0"> KOSA</a>
       <div class="dropdown" id="v-step-1">
         <button class="dropbtn">
           Solutions
@@ -20,7 +20,7 @@
         AI risks.
       </p>
       <div id="v-step-2">
-        <button class="btn default">Get Started</button>
+        <button class="btn default" >Get Started</button>
       </div>
     </div>
     <v-tour :steps="steps"></v-tour>
@@ -39,23 +39,21 @@ export default {
       steps: [
         {
           target: "#v-step-0",
-          header: {
-            title: "Get Started",
-          },
-          content: `Discover <strong>Vue Tour</strong>!`,
+          header:"Let's Start",
+          content: `KOSA helps you build more responsible AI`,
         },
         {
           target: "#v-step-1",
-          content: "An awesome plugin made with Vue.js!",
-          params: "left",
+          content: "Solutions we Provide",
+           params: {
+            placement: "left",
+          },
         },
         {
           target: "#v-step-2",
           content:
-            "Try it, you'll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.",
-          params: {
-            placement: "top",
-          },
+            "Join Us",
+        
         },
       ],
     };
@@ -107,10 +105,6 @@ font-weight: bold;
   margin: 0;
 }
 
-.navbar a:hover,
-.dropdown:hover .dropbtn {
-  background-color: #04aa6d;
-}
 .dropdown-content {
   display: none;
   position: absolute;
@@ -152,6 +146,19 @@ font-weight: bold;
 }
 
 .default:hover {
-  background: #e7e7e7;
+  background: green;
+}
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.visible {
+  position: relative;
+  z-index: 1;
 }
 </style>

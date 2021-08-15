@@ -22,3 +22,7 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+### link help me to thinking through this task
+https://www.npmjs.com/package/vue-tour

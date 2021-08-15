@@ -1,9 +1,9 @@
 <template>
   <div class="v-step" v-if="isSticky" id="tooltip">
-    <div class="v-step-header">
-      <p>{{ steps[index].target }}</p>
+    <div class="v-step-header" v-if="steps[index].header">
+      <p>{{ steps[index].header }}</p>
     </div>
-    <div class="v-step-content">
+    <div class="v-step-content" v-if="steps[index].content">
       <p>{{ steps[index].content }}</p>
     </div>
     <div class="v-step-action">
@@ -11,7 +11,9 @@
       <button class="v-step-button" @click="previousTour()" v-if="index > 0">
         Previous
       </button>
-      <button class="v-step-button ml-5" @click="nextTour()">Next</button>
+      <button class="v-step-button ml-5" @click="nextTour()">
+        {{ index + 1 == length ? "Finish" : "Next" }}
+      </button>
     </div>
   </div>
 </template>
@@ -30,7 +32,6 @@ export default {
     };
   },
   mounted() {
-    console.log("le", this.length);
     this.createTour();
   },
   methods: {
@@ -43,11 +44,16 @@ export default {
         this.$props.steps[this.index].target
       );
       if (targetElement) {
-        createPopper(targetElement, tooltip);
+        createPopper(
+          targetElement,
+          tooltip,
+          this.$props.steps[this.index].params
+        );
       }
     },
     nextTour() {
       this.index++;
+    
       if (this.index < this.length) {
         this.createTour();
       } else {
@@ -74,7 +80,6 @@ export default {
   padding: 1rem;
   pointer-events: auto;
   text-align: center;
-  margin-top: 0.5rem;
   z-index: 10000;
 }
 .v-step-header {
@@ -108,4 +113,14 @@ export default {
   vertical-align: middle;
   white-space: nowrap;
 }
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 </style>
