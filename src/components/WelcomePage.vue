@@ -1,17 +1,8 @@
 <template>
-  <div>
+  <div id="overlay">
     <div class="navbar">
       <a href="#home" id="v-step-0"> KOSA</a>
-      <div class="dropdown" id="v-step-1">
-        <button class="dropbtn">
-          Solutions
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-          <a href="#">Data Editor</a>
-          <a href="#">Model Monitor</a>
-        </div>
-      </div>
+      <div id="v-step-1" class="title">Solutions</div>
     </div>
     <div class="box">
       <h1>KOSA helps you build more responsible AI.</h1>
@@ -19,11 +10,15 @@
         Our state-of-the-art technology enables you to understand and mitigate
         AI risks.
       </p>
-      <div id="v-step-2">
-        <button class="btn default" >Get Started</button>
+      <div>
+        <button class="btn default" id="v-step-2">Get Started</button>
       </div>
     </div>
-    <v-tour :steps="steps"></v-tour>
+    <v-tour
+      :steps="steps"
+      @toggleOverlay="closeOverlay($event)"
+      @targetElement="createOverlay($event)"
+    ></v-tour>
   </div>
 </template>
 
@@ -39,24 +34,44 @@ export default {
       steps: [
         {
           target: "#v-step-0",
-          header:"Let's Start",
+          header: "Let's Start",
           content: `KOSA helps you build more responsible AI`,
         },
         {
           target: "#v-step-1",
           content: "Solutions we Provide",
-           params: {
-            placement: "left",
-          },
+          // params: {
+          //   placement: "left",
+          // },
         },
         {
           target: "#v-step-2",
-          content:
-            "Join Us",
-        
+          content: "Join Us",
         },
       ],
     };
+  },
+  mounted() {
+    this.createOverlay();
+  },
+  methods: {
+    createOverlay(item) {
+      if (item) {
+        var element = document.getElementById("overlay");
+        element.classList.add("step-overlay");
+        item.ele.classList.add("visible");
+        if (item.elePre) {
+          item.elePre.classList.remove("visible");
+        }
+      }
+    },
+    closeOverlay(item) {
+      var element = document.getElementById("overlay");
+      element.classList.remove("step-overlay");
+      if(item){
+        item.classList.remove("visible");
+      }
+    },
   },
 };
 </script>
@@ -68,9 +83,14 @@ a {
   color: #42b983;
 }
 .title {
-  text-align: left;
-  margin: 0.5rem;
-  width: 100px;
+  margin-top: 0.35rem;
+  font-weight: 900;
+  font-weight: bold;
+  float: right;
+  padding: 14px 16px;
+  margin-right: 2rem;
+  padding: 14px 16px;
+  overflow: hidden;
 }
 .navbar {
   overflow: hidden;
@@ -87,54 +107,13 @@ a {
   padding: 14px 16px;
   text-decoration: none;
 }
-.dropdown {
-  float: right;
-  margin-right: 2rem;
-  overflow: hidden;
-}
-.dropdown .dropbtn {
-  font-size: 16px;
-  border: none;
-  outline: none;
-  color: black;
-  font-weight: 700;
-font-weight: bold;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 
 .box {
   margin-top: 12rem;
 }
 .btn {
   border: 2px solid black;
-  background-color: white;
+  background-color: transparent;
   color: black;
   padding: 14px 28px;
   font-size: 16px;
@@ -148,7 +127,7 @@ font-weight: bold;
 .default:hover {
   background: green;
 }
-.overlay {
+.step-overlay {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
   position: absolute;
@@ -160,5 +139,6 @@ font-weight: bold;
 .visible {
   position: relative;
   z-index: 1;
+  background-color: white;
 }
 </style>

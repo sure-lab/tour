@@ -29,6 +29,8 @@ export default {
       isSticky: true,
       index: 0,
       length: this.$props.steps.length,
+      next: false,
+      pre: false,
     };
   },
   mounted() {
@@ -36,13 +38,45 @@ export default {
   },
   methods: {
     skipTour() {
+      //  var targetElement = document.querySelector(
+      //   this.$props.steps[this.index].target
+      // );
       this.isSticky = !this.isSticky;
+      this.$emit("toggleOverlay");
     },
     createTour() {
       const tooltip = document.querySelector("#tooltip");
       var targetElement = document.querySelector(
         this.$props.steps[this.index].target
       );
+      if (this.index === 0 && !this.pre) {
+        this.$emit("targetElement", { ele: targetElement });
+      } else if (this.index != 0 && this.next) {
+        var targetElement2 = document.querySelector(
+          this.$props.steps[this.index - 1].target
+        );
+        this.$emit("targetElement", {
+          ele: targetElement,
+          elePre: targetElement2,
+        });
+      } else if (this.index != 0 && this.pre) {
+        var targetElement3 = document.querySelector(
+          this.$props.steps[this.index + 1].target
+        );
+        this.$emit("targetElement", {
+          ele: targetElement,
+          elePre: targetElement3,
+        });
+      } else {
+        var targetElement4 = document.querySelector(
+          this.$props.steps[this.index + 1].target
+        );
+        this.$emit("targetElement", {
+          ele: targetElement,
+          elePre: targetElement4,
+        });
+      }
+
       if (targetElement) {
         createPopper(
           targetElement,
@@ -53,7 +87,7 @@ export default {
     },
     nextTour() {
       this.index++;
-    
+      this.next = true;
       if (this.index < this.length) {
         this.createTour();
       } else {
@@ -62,6 +96,8 @@ export default {
     },
     previousTour() {
       this.index--;
+      this.next = false;
+      this.pre = true;
       this.createTour();
     },
   },
@@ -113,7 +149,7 @@ export default {
   vertical-align: middle;
   white-space: nowrap;
 }
-.overlay {
+.step-overlay {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
   position: absolute;
@@ -122,5 +158,8 @@ export default {
   width: 100%;
   height: 100%;
 }
-
+.visible {
+  position: relative;
+  z-index: 1;
+}
 </style>
